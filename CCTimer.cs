@@ -83,16 +83,20 @@ public class CCTimer : IDisposable
     {
         bool busy = false;
 
+        string txt_txtTimer = "";
+        string txt_btnCountUpTimerStartCancel = "";
+        
+        Task.Run(() => { while (!ct.IsCancellationRequested) txt_txtTimer = _txtTimer.GetText();});
+        Task.Run(() => { while (!ct.IsCancellationRequested) txt_btnCountUpTimerStartCancel = _btnCountUpTimerStartCancel.GetText();});
+
         while (!ct.IsCancellationRequested)
         {
-            var state = (txt: _txtTimer.GetText(), btn: _btnCountUpTimerStartCancel.GetText());
-
-            if (!busy && state != ("0:00", "Start") && state.btn == "Cancel")
+            if (!busy && txt_txtTimer != "0:00" && txt_btnCountUpTimerStartCancel == "Cancel")
             {
                 busy = true;
                 if (OnCountUpTimerStart != null) OnCountUpTimerStart(this, EventArgs.Empty);
             }
-            else if (busy && state == ("0:00", "Start"))
+            else if (busy && txt_txtTimer == "0:00" && txt_btnCountUpTimerStartCancel == "Start")
             {
                 busy = false;
                 if (OnCountUpTimerStop != null) OnCountUpTimerStop(this, EventArgs.Empty);

@@ -1,7 +1,11 @@
 ﻿using (var app = new CCTimer())
 {
+    // Ctrl+C で強制終了された際にCCTimerを解放する
+    Console.CancelKeyPress += ((object? sender, ConsoleCancelEventArgs e) => {app.Dispose();});
+    
     app.OnCountUpTimerStart += OnStart;
     app.OnCountUpTimerStop += OnStop;
+    
     app.WaitForExit();
 }
 
