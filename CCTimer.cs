@@ -128,13 +128,13 @@ public class CCTimer : IDisposable
         {
             if (disposing)
             {
+                _cts.Cancel();
                 if (_process != null)
                 {
                     _process.Kill(true);
                     _process.Dispose();
                     _process = null;
                 }
-                _cts.Cancel();
             }
             _disposed = true;
         }
