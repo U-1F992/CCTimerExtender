@@ -29,8 +29,8 @@ public class CCTimer : IDisposable
     IntPtr _btnCountUpTimerStartCancel;
 
     CancellationTokenSource _cts;
-    public event EventHandler? OnCountUpTimerStart;
-    public event EventHandler? OnCountUpTimerStop;
+    public event EventHandler OnCountUpTimerStart;
+    public event EventHandler OnCountUpTimerStop;
 
     public CCTimer() : this(Path.Join(AppContext.BaseDirectory, "CCTimer", "CCTimer.exe")) {}
     public CCTimer(string path)
@@ -75,6 +75,9 @@ public class CCTimer : IDisposable
             throw;
         }
 
+        OnCountUpTimerStart += (object? sender, EventArgs e) => {};
+        OnCountUpTimerStop += (object? sender, EventArgs e) => {};
+
         _cts = new CancellationTokenSource();
         Task.Run(() => EventLoop(_cts.Token));
     }
@@ -94,12 +97,12 @@ public class CCTimer : IDisposable
             if (!busy && txt_txtTimer != "0:00" && txt_btnCountUpTimerStartCancel == "Cancel")
             {
                 busy = true;
-                if (OnCountUpTimerStart != null) OnCountUpTimerStart(this, EventArgs.Empty);
+                OnCountUpTimerStart(this, EventArgs.Empty);
             }
             else if (busy && txt_txtTimer == "0:00" && txt_btnCountUpTimerStartCancel == "Start")
             {
                 busy = false;
-                if (OnCountUpTimerStop != null) OnCountUpTimerStop(this, EventArgs.Empty);
+                OnCountUpTimerStop(this, EventArgs.Empty);
             }
         }
     }
