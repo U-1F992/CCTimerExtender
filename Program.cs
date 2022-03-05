@@ -1,4 +1,4 @@
-﻿using (var app = new CCTimer())
+﻿using (var app = new CCTimerExtender())
 {
     // Ctrl+C で強制終了された際にCCTimerを解放する
     Console.CancelKeyPress += ((object? sender, ConsoleCancelEventArgs e) => {app.Dispose();});

@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-public class CCTimer : IDisposable
+public class CCTimerExtender : IDisposable
 {
     [DllImport("user32.dll")]
     static extern IntPtr GetDesktopWindow();
@@ -32,8 +32,16 @@ public class CCTimer : IDisposable
     public event EventHandler OnCountUpTimerStart;
     public event EventHandler OnCountUpTimerStop;
 
-    public CCTimer() : this(Path.Join(AppContext.BaseDirectory, "CCTimer", "CCTimer.exe")) {}
-    public CCTimer(string path)
+    /// <summary>
+    /// CCTimer.exe を起動し、タイマーの開始時/終了時に発火するイベントを提供するクラス<br/>
+    /// デフォルトで "{AppContext.BaseDirectory}\CCTimer\CCTimer.exe" を参照します
+    /// </summary>
+    public CCTimerExtender() : this(Path.Join(AppContext.BaseDirectory, "CCTimer", "CCTimer.exe")) {}
+    /// <summary>
+    /// CCTimer.exe を起動し、タイマーの開始時/終了時に発火するイベントを提供するクラス
+    /// </summary>
+    /// <param name="path">CCTimer.exe</param>
+    public CCTimerExtender(string path)
     {
         // CCTimer.exeを起動する
         _process = Process.Start(new ProcessStartInfo(path));
